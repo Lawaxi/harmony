@@ -5,7 +5,7 @@ import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
-import PostStreamState from 'flarum/forum/states/PostStreamState';
+import PostStream from 'flarum/forum/components/PostStream';
 
 app.initializers.add('lawaxi-harmony', (app) => {
   override(DiscussionListItem.prototype, 'view', function(view) {
@@ -83,16 +83,17 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return a;
   });
 
-  override(PostStreamState.prototype, 'posts', function(posts) {
-    let a = posts();
+  override(PostStream.prototype, 'view', function(view) {
+    let a = view();
     if (!app.session.user) {
-      let b;
-      a.map((post) =>{
-        if(post.user() === (app.forum.attribute("lawaxi-harmony.allown") || "delay"))
-          return post;
-        else
-          return null;
-      })
+      a.getElementsByClassName("PostStream-item")
+        .for((item) => {
+          if(item.getAttribute('data-index') !== '0') {
+            a.remove(item);
+          }
+        })
     }
+    return a;
   });
+
 });
