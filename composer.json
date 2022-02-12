@@ -1,0 +1,40 @@
+{
+    "name": "lawaxi/harmony",
+    "description": "Hide your forum with a view of blog when unlogin.",
+    "keywords": [
+        "extension",
+        "flarum",
+		"china"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shit",
+            "email": "a.piece@of.shit",
+            "homepage": "http://a.piece.of.shit/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/fuck/you",
+        "source": "https://github.com/fuck/you",
+        "forum": "http://a.piece.of.shit/"
+    },
+    "require": {
+        "flarum/core": "^1.0.2"
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Harmony",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-people-sign",
+                "backgroundColor": "#fff",
+                "color": "#8B4513"
+            }
+        },
+        "flagrow": {
+            "discuss": "http://a.piece.of.shit/"
+        }
+    }
+}
