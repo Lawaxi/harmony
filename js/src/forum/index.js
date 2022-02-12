@@ -83,6 +83,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return a;
   });
 
+  /*
   override(PostStream.prototype, 'view', function(view) {
     let a = view();
     if (!app.session.user) {
@@ -94,6 +95,6 @@ app.initializers.add('lawaxi-harmony', (app) => {
         })
     }
     return a;
-  });
+  });*/
 
 });
