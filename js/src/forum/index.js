@@ -38,9 +38,9 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
   override(DiscussionListItem.prototype, 'replyCountItem', function(replyCountItem) {
     if (!app.session.user) {
-      return null;
+      return "";
     }
-    return replyCountItem;
+    return replyCountItem();
   });
 
   override(WelcomeHero.prototype, 'view', function(view) {
