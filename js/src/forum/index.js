@@ -5,7 +5,6 @@ import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
-import PostStream from 'flarum/forum/components/PostStream';
 
 app.initializers.add('lawaxi-harmony', (app) => {
   override(DiscussionListItem.prototype, 'view', function(view) {
@@ -35,6 +34,13 @@ app.initializers.add('lawaxi-harmony', (app) => {
       a.remove("terminalPost");
     }
     return a;
+  });
+
+  override(DiscussionListItem.prototype, 'replyCountItem', function(replyCountItem) {
+    if (!app.session.user) {
+      return null;
+    }
+    return replyCountItem;
   });
 
   override(WelcomeHero.prototype, 'view', function(view) {
@@ -86,19 +92,5 @@ app.initializers.add('lawaxi-harmony', (app) => {
     }
     return a;
   });
-
-  /*
-  override(PostStream.prototype, 'view', function(view) {
-    let a = view();
-    if (!app.session.user) {
-      a.getElementsByClassName("PostStream-item")
-        .for((item) => {
-          if(item.getAttribute('data-index') !== '0') {
-            a.remove(item);
-          }
-        })
-    }
-    return a;
-  });*/
 
 });

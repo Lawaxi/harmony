@@ -28,7 +28,7 @@
             "title": "Harmony",
             "category": "feature",
             "icon": {
-                "name": "fas fa-people-sign",
+                "name": "fas fa-person-sign",
                 "backgroundColor": "#fff",
                 "color": "#8B4513"
             }
