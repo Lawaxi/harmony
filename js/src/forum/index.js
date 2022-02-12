@@ -18,7 +18,11 @@ app.initializers.add('lawaxi-harmony', (app) => {
         && this.attrs.discussion.title().indexOf("台") === -1
         && this.attrs.discussion.title().indexOf("北京") === -1
         && this.attrs.discussion.title().indexOf("扬州") === -1
-        && this.attrs.discussion.title().indexOf("续") === -1)) {
+        && this.attrs.discussion.title().indexOf("续") === -1
+        && this.attrs.discussion.title().indexOf("论坛") === -1
+        && this.attrs.discussion.title().indexOf("社区") === -1)) {
+        return null;
+      }else if(this.attrs.discussion.commentCount() !== 0){
         return null;
       }
     }
