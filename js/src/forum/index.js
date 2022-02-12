@@ -7,6 +7,8 @@ import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
 
 app.initializers.add('lawaxi-harmony', (app) => {
+
+  //文章列表操作
   override(DiscussionListItem.prototype, 'view', function(view) {
     if(!app.session.user) {
       if ((this.attrs.discussion.user().username() !== (app.forum.attribute("lawaxi-harmony.allown") || "delay"))) {
@@ -20,8 +22,6 @@ app.initializers.add('lawaxi-harmony', (app) => {
         && this.attrs.discussion.title().indexOf("续") === -1
         && this.attrs.discussion.title().indexOf("论坛") === -1
         && this.attrs.discussion.title().indexOf("社区") === -1)) {
-        return null;
-      }else if(this.attrs.discussion.commentCount() !== 0){
         return null;
       }
     }
@@ -43,6 +43,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return replyCountItem();
   });
 
+  //Hero标题按钮
   override(WelcomeHero.prototype, 'view', function(view) {
     if(view() !== null && !app.session.user){
       const slideUp = () => {
@@ -70,6 +71,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return view();
   });
 
+  //注册按钮(仍然可以通过登录按钮注册)
   override(HeaderSecondary.prototype, 'items', function(view) {
       let a = view();
       if (!app.session.user) {
@@ -78,6 +80,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
       return a;
   });
 
+  //发文章按钮
   override(IndexPage.prototype, 'sidebarItems', function(sidebarItems) {
     let a = sidebarItems();
     if (!app.session.user) {
@@ -85,6 +88,8 @@ app.initializers.add('lawaxi-harmony', (app) => {
     }
     return a;
   });
+
+  //选择器按钮
   override(IndexPage.prototype, 'viewItems', function(viewItems) {
     let a = viewItems();
     if (!app.session.user) {
