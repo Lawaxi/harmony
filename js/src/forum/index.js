@@ -1,7 +1,7 @@
 import app from 'flarum/forum/app';
 import {extend, override } from 'flarum/common/extend';
 import DiscussionListItem from 'flarum/forum/components/DiscussionListItem';
-import DiscussionList from 'flarum/forum/components/DiscussionList';
+import DiscussionListState from 'flarum/forum/states/DiscussionListState';
 import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
@@ -36,9 +36,9 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return view();
   });
 
-  extend(DiscussionList.prototype, 'constructor', function (constructor) {
+  extend(DiscussionListState.prototype, 'constructor', function (constructor) {
     if (!app.session.user) {
-      this.pageSize = 114514;
+      DiscussionListState.prototype.pageSize = 114514;
     }
   });
   /*
