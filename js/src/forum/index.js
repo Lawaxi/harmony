@@ -35,7 +35,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
   extend(DiscussionList.prototype, 'view', function (view) {
     if (!app.session.user) {
       const state = this.attrs.state;
-      while (state.hasNext()) {
+      if (state.hasNext()) {
         state.loadNext.bind(state);
       }
     }
