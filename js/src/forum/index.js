@@ -38,8 +38,8 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
   override(DiscussionList.prototype, 'view', function (view) {
     if (!app.session.user) {
-      this.attrs.state.pageSize = 114514;
-      this.attrs.state.constructor.pageSize = 114514;
+      this.attrs.state.prototype.pageSize = 114514;
+      this.attrs.state.prototype.constructor.pageSize = 114514;
     }
     return view();
   });
