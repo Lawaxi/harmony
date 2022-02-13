@@ -10,14 +10,13 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Shit",
-            "email": "a.piece@of.shit",
-            "homepage": "http://a.piece.of.shit/"
+            "name": "Lawaxi",
+            "email": "2330234142@qq.com"
         }
     ],
     "support": {
-        "issues": "https://github.com/fuck/you",
-        "source": "https://github.com/fuck/you",
+        "issues": "https://github.com/Lawaxi/harmony",
+        "source": "https://github.com/Lawaxi/harmony",
         "forum": "http://a.piece.of.shit/"
     },
     "require": {
@@ -28,7 +27,7 @@
             "title": "Harmony",
             "category": "feature",
             "icon": {
-                "name": "fas fa-person-sign",
+                "name": "fas fa-poo",
                 "backgroundColor": "#fff",
                 "color": "#8B4513"
             }
