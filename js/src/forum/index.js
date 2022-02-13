@@ -36,12 +36,10 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return view();
   });
 
-  override(DiscussionList.prototype, 'view', function (view) {
+  extend(DiscussionList.prototype, 'view', function (view) {
     if (!app.session.user) {
-      this.attrs.state.prototype.pageSize = 114514;
-      this.attrs.state.prototype.constructor.pageSize = 114514;
+      DiscussionList.prototype.pageSize = 114514;
     }
-    return view();
   });
   /*
   override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {
