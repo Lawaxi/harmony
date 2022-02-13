@@ -16,29 +16,31 @@ app.initializers.add('lawaxi-harmony', (app) => {
     if (!app.session.user) {
       if ((this.attrs.discussion.user().username() !== (app.forum.attribute("lawaxi-harmony.allown") || "delay"))) {
         return null;
-      } else if (!(this.attrs.discussion.title().indexOf("习") === -1
-        && this.attrs.discussion.title().indexOf("江") === -1
-        && this.attrs.discussion.title().indexOf("彭") === -1
-        && this.attrs.discussion.title().indexOf("台") === -1
-        && this.attrs.discussion.title().indexOf("北京") === -1
-        && this.attrs.discussion.title().indexOf("扬州") === -1
-        && this.attrs.discussion.title().indexOf("续") === -1
-        && this.attrs.discussion.title().indexOf("论坛") === -1
-        && this.attrs.discussion.title().indexOf("社区") === -1)) {
-        return null;
-      } else if(this.attrs.discussion.replyCount()>0)
-      {return null;}
+      }
+      else if(this.attrs.discussion.replyCount()>0) {return null;}
+      else{
+        try {
+          app.forum.attribute("lawaxi-harmony.ban").split(',').forEach(
+            (value => {
+              if (this.attrs.discussion.title().indexOf(value) !== -1) {
+                throw new Error('c');
+              }
+            })
+          );
+        }catch (e){
+          return null;
+        }
+
+      }
     }
     return view();
   });
 
-  extend(DiscussionList.prototype, 'view', function (view) {
+  override(DiscussionList.prototype, 'view', function (view) {
     if (!app.session.user) {
-      const state = this.attrs.state;
-      if (state.hasNext()) {
-        state.loadNext.bind(state);
-      }
+      this.attrs.state.constructor.loadCount = 114514;
     }
+    return view();
   });
   /*
   override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {

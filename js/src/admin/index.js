@@ -17,4 +17,10 @@ app.initializers.add('lawaxi-harmony', () => {
     setting: 'lawaxi-harmony.blogsubtitle',
     type: 'string',
   });
+
+  app.extensionData.for('lawaxi-harmony').registerSetting({
+    label: app.translator.trans('lawaxi-harmony.admin.settings.ban'),
+    setting: 'lawaxi-harmony.ban',
+    type: 'string',
+  });
 });
