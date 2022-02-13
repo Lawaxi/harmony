@@ -38,7 +38,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
   extend(DiscussionListState.prototype, 'constructor', function (constructor) {
     if (!app.session.user) {
-      DiscussionListState.prototype.pageSize = 114514;
+      this.pageSize = 114514;
     }
   });
   /*
