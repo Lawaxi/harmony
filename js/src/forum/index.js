@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import {extend, override } from 'flarum/common/extend';
 import DiscussionListItem from 'flarum/forum/components/DiscussionListItem';
+import DiscussionList from 'flarum/forum/components/DiscussionList';
 import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
@@ -31,6 +32,14 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return view();
   });
 
+  extend(DiscussionList.prototype, 'view', function (view) {
+    if (!app.session.user) {
+      const state = this.attrs.state;
+      while (state.hasNext()) {
+        state.loadNext.bind(state);
+      }
+    }
+  });
   /*
   override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {
     let a = infoItems();
