@@ -31,13 +31,14 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return view();
   });
 
+  /*
   override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {
     let a = infoItems();
     if (!app.session.user) {
       a.remove("terminalPost");
     }
     return a;
-  });
+  });*/
 
   override(DiscussionListItem.prototype, 'replyCountItem', function (replyCountItem) {
     if (!app.session.user) {return null;}
