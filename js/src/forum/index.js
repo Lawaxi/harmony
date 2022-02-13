@@ -113,11 +113,13 @@ app.initializers.add('lawaxi-harmony', (app) => {
   if (app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')) {
     override(IndexPage.prototype, 'navItems', function (navItems) {
       let a = navItems();
-      app.store.all('tags').forEach((value, index, array) => {
-        if(value?.isQnA?.()){
-          a.remove("tag"+value.id());
-        }
-      })
+      if (!app.session.user) {
+        app.store.all('tags').forEach((value, index, array) => {
+          if (value?.isQnA?.()) {
+            a.remove("tag" + value.id());
+          }
+        })
+      }
       return a;
     });
   }
