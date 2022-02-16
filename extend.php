@@ -29,5 +29,5 @@ return [
         ->serializeToForum('lawaxi-harmony.blogtitle', 'lawaxi-harmony.blogtitle')
         ->serializeToForum('lawaxi-harmony.blogsubtitle', 'lawaxi-harmony.blogsubtitle')
         ->serializeToForum('lawaxi-harmony.ban', 'lawaxi-harmony.ban')
-        ->serializeToForum('lawaxi-harmony.ban', 'lawaxi-harmony.bantags'),
+        ->serializeToForum('lawaxi-harmony.bantags', 'lawaxi-harmony.bantags'),
 ];

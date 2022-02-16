@@ -15,7 +15,6 @@ app.initializers.add('lawaxi-harmony', (app) => {
   //兼容性
   if(app.initializers.has('flarum-tags')) {
     Discussion.prototype.tags = Model.hasMany('tags');
-    Tag.prototype.slug = Model.attribute('slug');
 
     if(app.initializers.has('fof/best-answer'))
       Tag.prototype.isQnA = Model.attribute('isQnA');
@@ -156,7 +155,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
             }
           }
 
-          if (app.forum.attribute("lawaxi-harmony.bantags").toString().indexOf(value.slug()) !== -1) {
+          if (app.forum.attribute("lawaxi-harmony.bantags").indexOf(value.slug()) !== -1) {
             a.remove("tag" + value.id());
           }
 
