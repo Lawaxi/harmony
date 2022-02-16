@@ -7,8 +7,17 @@ import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
 import Model from 'flarum/common/Model';
+import Discussion from "flarum/common/models/Discussion";
 
 app.initializers.add('lawaxi-harmony', (app) => {
+
+  //兼容性
+  if(app.initializers.has('flarum-tags')) {
+    Discussion.prototype.tags = Model.hasMany('tags');
+
+    if(app.initializers.has('fof/best-answer'))
+      (flarum/tags/models/Tag).prototype.isQnA = Model.attribute('isQnA');
+  }
 
   //文章列表操作
   override(DiscussionListItem.prototype, 'view', function (view) {
@@ -109,10 +118,6 @@ app.initializers.add('lawaxi-harmony', (app) => {
   });
 
   //发文章按钮
-  if(app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')) {
-    (flarum/tags/models/Tag).prototype.isQnA = Model.attribute('isQnA');
-  }
-
   override(IndexPage.prototype, 'sidebarItems', function (sidebarItems) {
     let a = sidebarItems();
 
