@@ -12,8 +12,8 @@ import Discussion from "flarum/common/models/Discussion";
 app.initializers.add('lawaxi-harmony', (app) => {
 
   //兼容性
+  Discussion.prototype.tags = Model.hasMany('tags');
   if(app.initializers.has('flarum-tags')) {
-    Discussion.prototype.tags = Model.hasMany('tags');
 
     if(app.initializers.has('fof/best-answer'))
       (flarum/tags/models/Tag).prototype.isQnA = Model.attribute('isQnA');
