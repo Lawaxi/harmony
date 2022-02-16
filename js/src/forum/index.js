@@ -36,7 +36,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
         //敏感分类内的文章
         if(app.initializers.has('flarum-tags')){
           this.attrs.discussion.tags().forEach((value) =>{
-            if(app.forum.attribute("lawaxi-harmony.bantags").indexOf(value) !== -1){
+            if(app.forum.attribute("lawaxi-harmony.bantags").indexOf(value.slug()) !== -1){
               throw new Error('a');
             }
           })
