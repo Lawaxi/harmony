@@ -5,3 +5,4 @@ lawaxi-harmony:
       blogtitle: 站名
       blogsubtitle: 站信息
       ban: 敏感词
+      bantags: 敏感标签(slug)

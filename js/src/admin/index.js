@@ -23,4 +23,12 @@ app.initializers.add('lawaxi-harmony', () => {
     setting: 'lawaxi-harmony.ban',
     type: 'string',
   });
+
+  if(app.initializers.has('flarum-tags')) {
+    app.extensionData.for('lawaxi-harmony').registerSetting({
+      label: app.translator.trans('lawaxi-harmony.admin.settings.bantags'),
+      setting: 'lawaxi-harmony.bantags',
+      type: 'string',
+    });
+  }
 });

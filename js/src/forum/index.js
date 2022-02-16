@@ -6,7 +6,6 @@ import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
-import Tag from 'flarum/tags/models/Tag';
 import Model from 'flarum/common/Model';
 
 app.initializers.add('lawaxi-harmony', (app) => {
@@ -14,34 +13,51 @@ app.initializers.add('lawaxi-harmony', (app) => {
   //文章列表操作
   override(DiscussionListItem.prototype, 'view', function (view) {
     if (!app.session.user) {
+
+      //非特定作者的文章
       if ((this.attrs.discussion.user().username() !== (app.forum.attribute("lawaxi-harmony.allown") || "delay"))) {
         return null;
       }
+      //有回复的文章
       else if(this.attrs.discussion.replyCount()>0) {return null;}
-      else{
-        try {
-          app.forum.attribute("lawaxi-harmony.ban").split(',').forEach(
-            (value => {
-              if (this.attrs.discussion.title().indexOf(value) !== -1) {
-                throw new Error('c');
-              }
-            })
-          );
-        }catch (e){
-          return null;
+
+      try {
+
+        //敏感分类内的文章
+        if(app.initializers.has('flarum-tags')){
+          let bantags = app.forum.attribute("lawaxi-harmony.bantags").split(',');
+          this.attrs.discussion.tags().forEach((value) =>{
+            if(bantags.indexOf(value) !== -1){
+              throw new Error('a');
+            }
+          })
         }
 
+        //标题含敏感词的文章
+        app.forum.attribute("lawaxi-harmony.ban").split(',').forEach(
+          (value => {
+            if (this.attrs.discussion.title().indexOf(value) !== -1) {
+              throw new Error('b');
+            }
+          })
+        );
+
+      }catch (e){
+        return null;
       }
     }
     return view();
   });
 
+  //【未实现】给陌生人显示更长的主页 防止因屏蔽部分文章而导致每页文章过少
   extend(DiscussionListState.prototype, 'constructor', function (constructor) {
     if (!app.session.user) {
       this.pageSize = 114514;
     }
   });
+
   /*
+  【旧功能】移去发布/回复日期信息 因不美观现已删去
   override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {
     let a = infoItems();
     if (!app.session.user) {
@@ -83,6 +99,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
   });
 
   //注册按钮(仍然可以通过登录按钮注册)
+  //建议通过语言文件一并修改登录按钮文本 可以选用fof/linguist拓展
   override(HeaderSecondary.prototype, 'items', function (view) {
     let a = view();
     if (!app.session.user) {
@@ -93,11 +110,13 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
   //发文章按钮
   if(app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')) {
-    Tag.prototype.isQnA = Model.attribute('isQnA');
+    (flarum/tags/models/Tag).prototype.isQnA = Model.attribute('isQnA');
   }
 
   override(IndexPage.prototype, 'sidebarItems', function (sidebarItems) {
     let a = sidebarItems();
+
+    //由于best-answer的问答用标签主页 有寻找newDiscussion元素并替换显示文本的机制 以兼容
     if(app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')){
       if(this.currentTag()?.isQnA?.()){
         return a;}
@@ -119,18 +138,27 @@ app.initializers.add('lawaxi-harmony', (app) => {
     return a;
   });
 
-  //去除问答用标签
-  if (app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')) {
+  //去除问答用标签&敏感标签
+  if(app.initializers.has('flarum-tags')) {
     override(IndexPage.prototype, 'navItems', function (navItems) {
       let a = navItems();
+      let bantags = app.forum.attribute("lawaxi-harmony.bantags").split(',');
       if (!app.session.user) {
         app.store.all('tags').forEach((value, index, array) => {
-          if (value?.isQnA?.()) {
+          if (app.initializers.has('fof/best-answer')) {
+            if (value?.isQnA?.()) {
+              a.remove("tag" + value.id());
+            }
+          }
+
+          if (bantags.indexOf(value.slug()) !== -1) {
             a.remove("tag" + value.id());
           }
+
         })
       }
       return a;
     });
   }
+
 });
