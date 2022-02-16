@@ -156,7 +156,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
             }
           }
 
-          if (app.forum.attribute("lawaxi-harmony.bantags").indexOf(value.slug()) !== -1) {
+          if (app.forum.attribute("lawaxi-harmony.bantags").toString().indexOf(value.slug()) !== -1) {
             a.remove("tag" + value.id());
           }
 
