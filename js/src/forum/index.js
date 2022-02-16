@@ -35,7 +35,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
         //敏感分类内的文章
         if(app.initializers.has('flarum-tags')){
-          let bantags = app.forum.attribute("lawaxi-harmony.bantags").split(',');
+          let bantags = app.forum.attribute("lawaxi-harmony.bantags");
           this.attrs.discussion.tags().forEach((value) =>{
             if(bantags.indexOf(value) !== -1){
               throw new Error('a');
@@ -148,7 +148,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
   if(app.initializers.has('flarum-tags')) {
     override(IndexPage.prototype, 'navItems', function (navItems) {
       let a = navItems();
-      let bantags = app.forum.attribute("lawaxi-harmony.bantags").split(',');
+      let bantags = app.forum.attribute("lawaxi-harmony.bantags");
       if (!app.session.user) {
         app.store.all('tags').forEach((value, index, array) => {
           if (app.initializers.has('fof/best-answer')) {
