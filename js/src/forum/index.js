@@ -1,14 +1,19 @@
 import app from 'flarum/forum/app';
 import {extend, override } from 'flarum/common/extend';
 import DiscussionListItem from 'flarum/forum/components/DiscussionListItem';
-import DiscussionListState from 'flarum/forum/states/DiscussionListState';
 import WelcomeHero from 'flarum/forum/components/WelcomeHero';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
+import PostMeta from 'flarum/forum/components/PostMeta';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Button from 'flarum/common/components/Button';
 import Model from 'flarum/common/Model';
 import Discussion from "flarum/common/models/Discussion";
 import Tag from "flarum/tags/models/Tag";
+import DiscussionListState from "flarum/forum/states/DiscussionListState";
+import humanTime from 'flarum/common/helpers/humanTime';
+import fullTime from 'flarum/common/helpers/fullTime';
+import ipLocation from './helpers/ipLocation';
+import User from 'flarum/common/models/User';
 
 app.initializers.add('lawaxi-harmony', (app) => {
 
@@ -19,6 +24,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
     if(app.initializers.has('fof/best-answer'))
       Tag.prototype.isQnA = Model.attribute('isQnA');
   }
+
 
   //文章列表操作
   override(DiscussionListItem.prototype, 'view', function (view) {
@@ -65,16 +71,6 @@ app.initializers.add('lawaxi-harmony', (app) => {
     }
   });
 
-  /*
-  【旧功能】移去发布/回复日期信息 因不美观现已删去
-  override(DiscussionListItem.prototype, 'infoItems', function (infoItems) {
-    let a = infoItems();
-    if (!app.session.user) {
-      a.remove("terminalPost");
-    }
-    return a;
-  });*/
-
   override(DiscussionListItem.prototype, 'replyCountItem', function (replyCountItem) {
     if (!app.session.user) {return null;}
   });
@@ -98,7 +94,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
 
             <div class="containerNarrow">
               <h2 class="Hero-title">{app.forum.attribute("lawaxi-harmony.blogtitle")}</h2>
-              <div class="Hero-subtitle">{m.trust(app.forum.attribute("lawaxi-harmony.blogsubtitle"))}</div>
+              <div class="Hero-subtitle">{app.forum.attribute("lawaxi-harmony.blogsubtitle")}</div>
             </div>
           </div>
         </header>
@@ -113,23 +109,26 @@ app.initializers.add('lawaxi-harmony', (app) => {
     let a = view();
     if (!app.session.user) {
       a.remove("signUp");
+    }else{
+
     }
     return a;
   });
 
   //发文章按钮
   override(IndexPage.prototype, 'sidebarItems', function (sidebarItems) {
-    let a = sidebarItems();
+    if(app.session.user)
+      return sidebarItems();
 
     //由于best-answer的问答用标签主页 有寻找newDiscussion元素并替换显示文本的机制 以兼容
     if(app.initializers.has('flarum-tags') && app.initializers.has('fof/best-answer')){
       if(this.currentTag()?.isQnA?.()){
-        return a;}
+        return sidebarItems();}
     }
 
-    if (!app.session.user) {
-      a.remove("newDiscussion");
-    }
+
+    let a = sidebarItems();
+    a.remove("newDiscussion");
     return a;
   });
 
@@ -165,4 +164,61 @@ app.initializers.add('lawaxi-harmony', (app) => {
     });
   }
 
-});
+  override(PostMeta.prototype,"view", function (view) {
+    const post = this.attrs.post;
+    const time = post.createdAt();
+    const permalink = this.getPermalink(post);
+    const touch = 'ontouchstart' in document.documentElement;
+
+    // When the dropdown menu is shown, select the contents of the permalink
+    // input so that the user can quickly copy the URL.
+    const selectPermalink = function (e) {
+      setTimeout(() => $(this).parent().find('.PostMeta-permalink').select());
+
+      e.redraw = false;
+    };
+
+    let post_number = function (a) {
+      switch(a){
+        case 1:
+          return app.translator.trans('lawaxi-harmony.forum.post_number1', { number: 1 });
+        case 2:
+          return app.translator.trans('lawaxi-harmony.forum.post_number2', { number: 2 });
+        case 3:
+          return app.translator.trans('lawaxi-harmony.forum.post_number3', { number: 3 });
+        default:
+          return app.translator.trans('core.forum.post.number_tooltip', { number: post.number() })
+      }
+    }
+
+    return (
+      <div className="Dropdown PostMeta">
+        <a className="Dropdown-toggle" onclick={selectPermalink} data-toggle="dropdown">
+          {humanTime(time)}
+          {<a>{'   发布于'+ipLocation(post.data.attributes.ipAddress)}</a>}
+        </a>
+
+        <div className="Dropdown-menu dropdown-menu">
+
+          <span className="PostMeta-number">
+            {
+              post_number(post.number())
+            }</span>{' '}
+          <span className="PostMeta-time">{fullTime(time)}</span> <span className="PostMeta-ip">{post.data.attributes.ipAddress}</span>
+          {touch ? (
+            <a className="Button PostMeta-permalink" href={permalink}>
+              {permalink}
+            </a>
+          ) : (
+            <input className="FormControl PostMeta-permalink" value={permalink} onclick={(e) => e.stopPropagation()} />
+          )}
+        </div>
+      </div>
+    );
+  })
+
+
+
+
+
+},1145141919);
