@@ -12,7 +12,6 @@ return [
         $settings->set('lawaxi-harmony.blogsubtitle', "“月亮在无人看时不存在。” 本站为 delay 个人学习生活兴趣分享博客。");
         $settings->set('lawaxi-harmony.ban', "习,江,彭,台,北京,扬州,续,论坛,社区");
         $settings->set('lawaxi-harmony.bantags', "teahouse");
-        $settings->set('lawaxi-harmony.http', "https");
     },
     'down' => function (Builder $schema) {
         /**
@@ -24,6 +23,5 @@ return [
         $settings->delete('lawaxi-harmony.blogsubtitle');
         $settings->delete('lawaxi-harmony.ban');
         $settings->delete('lawaxi-harmony.bantags');
-        $settings->delete('lawaxi-harmony.http');
     },
 ];

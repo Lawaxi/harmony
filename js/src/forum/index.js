@@ -195,7 +195,7 @@ app.initializers.add('lawaxi-harmony', (app) => {
       <div className="Dropdown PostMeta">
         <a className="Dropdown-toggle" onclick={selectPermalink} data-toggle="dropdown">
           {humanTime(time)}
-          {<a>{'   发布于'+ipLocation(app.forum.attribute("lawaxi-harmony.http"),post.data.attributes.ipAddress)}</a>}
+          {<a>{'   发布于'+ipLocation(post.data.attributes.ipAddress)}</a>}
         </a>
 
         <div className="Dropdown-menu dropdown-menu">
