@@ -1,7 +1,8 @@
-export default function ipLocation(ip : string) {
+
+export default function ipLocation(ip : string, http: string) {
 
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open('GET', 'http://ip-api.com/json/'+ip+'?lang=zh-CN', false);
+  httpRequest.open('GET', http+'://ip-api.com/json/'+ip+'?lang=zh-CN', false);
   httpRequest.send();
   if (httpRequest.readyState == 4 && httpRequest.status == 200) {
     let a = JSON.parse(httpRequest.responseText);
